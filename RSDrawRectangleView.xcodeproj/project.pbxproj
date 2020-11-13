@@ -16,6 +16,7 @@
 		19D566B7255CCB780088FE1F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D566B6255CCB780088FE1F /* main.m */; };
 		19D566BF255CCBBB0088FE1F /* RSDrawRectangleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D566BE255CCBBB0088FE1F /* RSDrawRectangleView.m */; };
 		19D566C2255CCD8A0088FE1F /* RSRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D566C1255CCD8A0088FE1F /* RSRectangle.m */; };
+		19E57460255E2944004B310E /* RSRectangleData.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E5745F255E2944004B310E /* RSRectangleData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,8 @@
 		19D566BE255CCBBB0088FE1F /* RSDrawRectangleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSDrawRectangleView.m; sourceTree = "<group>"; };
 		19D566C0255CCD8A0088FE1F /* RSRectangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSRectangle.h; sourceTree = "<group>"; };
 		19D566C1255CCD8A0088FE1F /* RSRectangle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSRectangle.m; sourceTree = "<group>"; };
+		19E5745E255E2944004B310E /* RSRectangleData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSRectangleData.h; sourceTree = "<group>"; };
+		19E5745F255E2944004B310E /* RSRectangleData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSRectangleData.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,8 @@
 				19D566BE255CCBBB0088FE1F /* RSDrawRectangleView.m */,
 				19D566C0255CCD8A0088FE1F /* RSRectangle.h */,
 				19D566C1255CCD8A0088FE1F /* RSRectangle.m */,
+				19E5745E255E2944004B310E /* RSRectangleData.h */,
+				19E5745F255E2944004B310E /* RSRectangleData.m */,
 				19D566AD255CCB750088FE1F /* Main.storyboard */,
 				19D566B0255CCB780088FE1F /* Assets.xcassets */,
 				19D566B2255CCB780088FE1F /* LaunchScreen.storyboard */,
@@ -162,6 +167,7 @@
 				19D566A6255CCB750088FE1F /* AppDelegate.m in Sources */,
 				19D566B7255CCB780088FE1F /* main.m in Sources */,
 				19D566A9255CCB750088FE1F /* SceneDelegate.m in Sources */,
+				19E57460255E2944004B310E /* RSRectangleData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

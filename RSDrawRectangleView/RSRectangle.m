@@ -29,71 +29,23 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
 
 @implementation RSRectangle
 
-- (instancetype)initWithParent:(UIView *)view frame:(CGRect)frame {
+- (instancetype)initWithParent:(UIView *)view frame:(RSRectangleData *)rectangle {
     self = [super init];
     if (self) {
         _extensionLength = 20;
         self.backgroundColor = UIColor.clearColor;
         [view addSubview:self];
-        self.x = frame.origin.x;
-        self.y = frame.origin.y;
-        self.width = frame.size.width;
-        self.height = frame.size.height;
+        self.rectangle = rectangle.clone;
+        [self updateFrame];
     }
     return self;
-}
-
-- (void)setX:(CGFloat)x {
-    if (x < 0) {
-        x = 0;
-    }
-    if (x > 1) {
-        x = 1;
-    }
-    if (x + _width > 1) {
-        x = 1 - _width;
-    }
-    _x = x;
-    [self updateFrame];
-}
-
-- (void)setY:(CGFloat)y {
-    if (y < 0) {
-        y = 0;
-    }
-    if (y > 1) {
-        y = 1;
-    }
-    if (y + _height > 1) {
-        y = 1 - _height;
-    }
-    _y = y;
-    [self updateFrame];
-}
-
-- (void)setWidth:(CGFloat)width {
-    CGFloat maxWidth = 1 - _x;
-    if (width > maxWidth) {
-        width = maxWidth;
-    }
-    _width = width;
-    [self updateFrame];
-}
-
-- (void)setHeight:(CGFloat)height {
-    CGFloat maxHeight = 1 - _y;
-    if (height > maxHeight) {
-        height = maxHeight;
-    }
-    _height = height;
-    [self updateFrame];
 }
 
 - (void)updateFrame {
     CGSize size = self.superview.bounds.size;
     CGFloat width = size.width;
     CGFloat height = size.height;
-    self.frame = CGRectMake(_x * width - _extensionLength, _y * height - _extensionLength, _width * width + _extensionLength * 2, _height * height + _extensionLength * 2);
+    self.frame = CGRectMake(_rectangle.x * width - _extensionLength, _rectangle.y * height - _extensionLength, _rectangle.width * width + _extensionLength * 2, _rectangle.height * height + _extensionLength * 2);
     [self setNeedsDisplay];
 }
 
@@ -110,7 +62,7 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
 #pragma mark - Touch
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     _beginPoint = [touches.anyObject locationInView:self.superview];
-    _beginRect = CGRectMake(_x, _y, _width, _height);
+    _beginRect = CGRectMake(_rectangle.x, _rectangle.y, _rectangle.width, _rectangle.height);
     CGPoint point = [touches.anyObject locationInView:self];
     _state = [self stateWithPoint:point];
 }
@@ -223,10 +175,10 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
         }
     }
 
-    _x = x;
-    _y = y;
-    _width = width;
-    _height = height;
+    _rectangle.x = x;
+    _rectangle.y = y;
+    _rectangle.width = width;
+    _rectangle.height = height;
     [self updateFrame];
 }
 

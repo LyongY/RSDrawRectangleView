@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RSRectangle.h"
+#import "RSRectangleData.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,13 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithMaxCount:(NSInteger)maxCount colors:(NSArray<UIColor *> *)colors;
 
-- (void)addRectangle:(RSRectangle *)rectangle;
+- (void)addRectangle:(RSRectangleData *)rectangle;
 
-- (void)addRectangles:(NSArray<RSRectangle *> *)rectangles;
+- (void)addRectangles:(NSArray<RSRectangleData *> *)rectangles;
 
 - (void)deleteAll;
 
-- (NSArray<RSRectangle *> *)rectangles;
+- (NSArray<RSRectangleData *> *)rectangles;
 
 @end
 

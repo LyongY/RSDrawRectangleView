@@ -22,7 +22,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    RSRectangle *rectangle = [[RSRectangle alloc] initWithParent:self.view frame:CGRectMake(0.2, 0.2, 0.5, 0.3)];
+    RSRectangle *rectangle = [[RSRectangle alloc] initWithParent:self.view frame:[[RSRectangleData alloc] initWithFrame:CGRectMake(0.2, 0.2, 0.5, 0.3)]];
 //    RSRectangle *rectangle = [[RSRectangle alloc] initWithParent:self.view frame:CGRectMake(0, 0, 1, 1)];
     NSLog(@"%@", NSStringFromCGRect(rectangle.frame));
 

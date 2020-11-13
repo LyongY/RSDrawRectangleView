@@ -7,11 +7,12 @@
 //
 
 #import "RSDrawRectangleView.h"
+#import "RSRectangle.h"
 
 @interface RSDrawRectangleView() {
     NSInteger _maxCount;
     NSMutableArray *_colors;
-    NSMutableArray *_rectangles;
+    NSMutableArray<RSRectangle *> *_rectangles;
 }
 
 @end
@@ -27,23 +28,24 @@
     return self;
 }
 
-- (void)addRectangle:(RSRectangle *)rectangle {
-    [_rectangles addObject:rectangle];
-    [self setNeedsDisplay];
+- (void)addRectangle:(RSRectangleData *)rectangleData {
+    [_rectangles addObject:[[RSRectangle alloc] initWithParent:self frame:rectangleData]];
 }
 
-- (void)addRectangles:(NSArray<RSRectangle *> *)rectangles {
-    for (RSRectangle *item in rectangles) {
+- (void)addRectangles:(NSArray<RSRectangleData *> *)rectangles {
+    for (RSRectangleData *item in rectangles) {
         [self addRectangle:item];
     }
 }
 
 - (void)deleteAll {
+    for (UIView *view in _rectangles) {
+        [view removeFromSuperview];
+    }
     [_rectangles removeAllObjects];
-    [self setNeedsDisplay];
 }
 
-- (NSArray<RSRectangle *> *)rectangles {
+- (NSArray<RSRectangleData *> *)rectangles {
     return _rectangles.mutableCopy;
 }
 
