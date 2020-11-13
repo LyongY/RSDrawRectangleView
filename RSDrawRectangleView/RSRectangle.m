@@ -54,13 +54,14 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
     UIBezierPath *full = [UIBezierPath bezierPathWithRect:rect];
     [full stroke];
     
-    [UIColor.blackColor set];
+    [self.rectangle.drawColor set];
     UIBezierPath *real = [UIBezierPath bezierPathWithRect:CGRectMake(rect.origin.x + _extensionLength, rect.origin.y + _extensionLength, rect.size.width - _extensionLength * 2, rect.size.height - _extensionLength * 2)];
-    [real stroke];
+    [real fill];
 }
 
 #pragma mark - Touch
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.superview bringSubviewToFront:self];
     _beginPoint = [touches.anyObject locationInView:self.superview];
     _beginRect = CGRectMake(_rectangle.x, _rectangle.y, _rectangle.width, _rectangle.height);
     CGPoint point = [touches.anyObject locationInView:self];
@@ -159,8 +160,8 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
         if (offset > -_beginRect.size.height) { // 在下
             y = _beginRect.origin.y;
             height = offset + _beginRect.size.height;
-            if (x + height > 1) {
-                height = 1 - x;
+            if (y + height > 1) {
+                height = 1 - y;
             }
         } else { // 跨上
             y = _beginRect.origin.y + _beginRect.size.height + offset;
