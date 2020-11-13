@@ -120,36 +120,114 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
     BOOL changeTop = _state == RSRectangleStateTop || _state == RSRectangleStateTopRight || _state == RSRectangleStateTopLeft;
     BOOL changeRight = _state == RSRectangleStateRight || _state == RSRectangleStateBottomRight || _state == RSRectangleStateTopRight;
     BOOL changeBottom = _state == RSRectangleStateBottom || _state == RSRectangleStateBottomLeft || _state == RSRectangleStateBottomRight;
-    if (_state == RSRectangleStateNone) {
-        changeLeft = changeTop = changeRight = changeBottom = YES;
-    }
+
     CGPoint point = [touches.anyObject locationInView:self.superview];
     
+    CGFloat x = _beginRect.origin.x;
+    CGFloat y = _beginRect.origin.y;
+    CGFloat width = _beginRect.size.width;
+    CGFloat height = _beginRect.size.height;
+    
+    if (_state == RSRectangleStateNone) {
+        CGFloat offsetX = (point.x - _beginPoint.x) / self.superview.bounds.size.width;
+        CGFloat offsetY = (point.y - _beginPoint.y) / self.superview.bounds.size.height;
+        x += offsetX;
+        y += offsetY;
+        x = x < 0 ? 0 : x;
+        y = y < 0 ? 0 : y;
+        x = x + width > 1 ? 1 - width : x;
+        y = y + height > 1 ? 1 - height : y;
+    }
+
     if (changeLeft) {
-        CGFloat offseet = (point.x - _beginPoint.x) / self.superview.bounds.size.width;
-        CGFloat x = 0;
-        CGFloat width = 0;
-        if (offseet < _beginRect.size.width) { // 在左
-            x = _beginRect.origin.x + offseet;
+        CGFloat offset = (point.x - _beginPoint.x) / self.superview.bounds.size.width;
+        if (offset < _beginRect.size.width) { // 在左
+            x = _beginRect.origin.x + offset;
             if (x < 0) {
                 x = 0;
             }
             if (x == 0) {
                 width = _beginRect.size.width + _beginRect.origin.x;
             } else {
-                width = _beginRect.size.width - offseet;
+                width = _beginRect.size.width - offset;
             }
         } else { // 跨右
             x = _beginRect.origin.x + _beginRect.size.width;
-            width = offseet - _beginRect.size.width;
+            width = offset - _beginRect.size.width;
             if (x + width > 1) {
                 width = 1 - x;
             }
         }
-        _x = x;
-        _width = width;
-        [self updateFrame];
     }
+    
+    if (changeRight) {
+        CGFloat offset = (point.x - _beginPoint.x) / self.superview.bounds.size.width;
+        if (offset > -_beginRect.size.width) { // 在右
+            x = _beginRect.origin.x;
+            width = offset + _beginRect.size.width;
+            if (x + width > 1) {
+                width = 1 - x;
+            }
+        } else { // 跨左
+            x = _beginRect.origin.x + _beginRect.size.width + offset;
+            if (x < 0) {
+                x = 0;
+            }
+            if (x == 0) {
+                width = _beginRect.origin.x;
+            } else {
+                width =  -offset - _beginRect.size.width;
+            }
+        }
+    }
+    
+    if (changeTop) {
+        CGFloat offset = (point.y - _beginPoint.y) / self.superview.bounds.size.height;
+        if (offset < _beginRect.size.height) { // 在上
+            y = _beginRect.origin.y + offset;
+            if (y < 0) {
+                y = 0;
+            }
+            if (y == 0) {
+                height = _beginRect.size.height + _beginRect.origin.y;
+            } else {
+                height = _beginRect.size.height - offset;
+            }
+        } else { // 跨下
+            y = _beginRect.origin.y + _beginRect.size.height;
+            height = offset - _beginRect.size.height;
+            if (y + height > 1) {
+                height = 1 - y;
+            }
+        }
+    }
+    
+    if (changeBottom) {
+        CGFloat offset = (point.y - _beginPoint.y) / self.superview.bounds.size.height;
+        if (offset > -_beginRect.size.height) { // 在下
+            y = _beginRect.origin.y;
+            height = offset + _beginRect.size.height;
+            if (x + height > 1) {
+                height = 1 - x;
+            }
+        } else { // 跨上
+            y = _beginRect.origin.y + _beginRect.size.height + offset;
+            if (y < 0) {
+                y = 0;
+            }
+            if (y == 0) {
+                height = _beginRect.origin.y;
+            } else {
+                height =  -offset - _beginRect.size.height;
+            }
+        }
+    }
+
+    _x = x;
+    _y = y;
+    _width = width;
+    _height = height;
+    [self updateFrame];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
