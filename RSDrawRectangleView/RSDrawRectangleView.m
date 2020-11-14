@@ -13,7 +13,7 @@
     NSInteger _maxCount;
     NSMutableArray *_colors;
     NSMutableArray<RSRectangle *> *_rectangles;
-    RSRectangleData *_tempRectangleData;
+    RSRectangle *_tempRectangle;
     CGPoint _beginPoint;
 }
 
@@ -67,11 +67,18 @@
 
 #pragma mark - 交互
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    _beginPoint = [touches.anyObject locationInView:self];
-    _tempRectangleData = [[RSRectangleData alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    if (_rectangles.count < _maxCount) {
+        _beginPoint = [touches.anyObject locationInView:self];
+        RSRectangleData *tempData = [[RSRectangleData alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        [self addRectangle:tempData];
+        _tempRectangle = _rectangles.lastObject;
+    }
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    if (!_tempRectangle) {
+        return;
+    }
     CGPoint point = [touches.anyObject locationInView:self];
     CGFloat offsetX = point.x - _beginPoint.x;
     CGFloat offsetY = point.y - _beginPoint.y;
@@ -92,28 +99,30 @@
         height = -offsetY;
     }
     
-    _tempRectangleData.x = x /= self.bounds.size.width;
-    _tempRectangleData.y = y /= self.bounds.size.height;
-    _tempRectangleData.width = width /= self.bounds.size.width;
-    _tempRectangleData.height = height /= self.bounds.size.height;
+    _tempRectangle.rectangle.x = x /= self.bounds.size.width;
+    _tempRectangle.rectangle.y = y /= self.bounds.size.height;
+    _tempRectangle.rectangle.width = width /= self.bounds.size.width;
+    _tempRectangle.rectangle.height = height /= self.bounds.size.height;
+    [_tempRectangle updateFrame];
     
     [self setNeedsDisplay];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self addRectangle:_tempRectangleData];
-    _tempRectangleData = nil;
+    _tempRectangle = nil;
     [self setNeedsDisplay];
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self addRectangle:_tempRectangleData];
-    _tempRectangleData = nil;
+    _tempRectangle = nil;
     [self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)rect {
-
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    for (RSRectangle *item in _rectangles) {
+        [item updateFrame];
+    }
 }
 
 @end

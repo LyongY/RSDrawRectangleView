@@ -53,6 +53,10 @@
     return item;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"(%4g, %4g, %4g, %4g)", _x, _y, _width, _height];
+}
+
 //- (void)setX:(CGFloat)x {
 //    if (x < 0) {
 //        x = 0;

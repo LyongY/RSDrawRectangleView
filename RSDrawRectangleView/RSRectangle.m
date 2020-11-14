@@ -50,13 +50,41 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
 }
 
 - (void)drawRect:(CGRect)rect {
-    [UIColor.lightGrayColor set];
-    UIBezierPath *full = [UIBezierPath bezierPathWithRect:rect];
-    [full stroke];
+//    [UIColor.lightGrayColor set];
+//    UIBezierPath *full = [UIBezierPath bezierPathWithRect:rect];
+//    [full stroke];
     
-    [self.rectangle.drawColor set];
-    UIBezierPath *real = [UIBezierPath bezierPathWithRect:CGRectMake(rect.origin.x + _extensionLength, rect.origin.y + _extensionLength, rect.size.width - _extensionLength * 2, rect.size.height - _extensionLength * 2)];
+    // 填充色
+    CGRect showRect = CGRectMake(rect.origin.x + _extensionLength, rect.origin.y + _extensionLength, rect.size.width - _extensionLength * 2, rect.size.height - _extensionLength * 2);
+    [_rectangle.drawColor set];
+    UIBezierPath *real = [UIBezierPath bezierPathWithRect:showRect];
     [real fill];
+    
+    CGFloat red = 0, green = 0, blue = 0, alpha = 0, white = 0;
+    if ([_rectangle.drawColor getRed:&red green:&green blue:&blue alpha:&alpha]) {
+        [[UIColor colorWithRed:red * 0.7 green:green * 0.7 blue:blue * 0.7 alpha:1] set];
+    } else {
+        [_rectangle.drawColor getWhite:&white alpha:&alpha];
+        [[UIColor colorWithWhite:white * 0.7 alpha:1] set];
+    }
+    
+    // 边框
+    UIBezierPath *border = [UIBezierPath bezierPathWithRect:showRect];
+    border.lineWidth = 1;
+    [border stroke];
+    
+    // 四点
+    CGFloat length = 6;
+    UIBezierPath *topLeft = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(showRect.origin.x - length / 2, showRect.origin.y - length / 2, length, length)];
+    UIBezierPath *topRight = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(showRect.origin.x + showRect.size.width - length / 2, showRect.origin.y - length / 2, length, length)];
+    UIBezierPath *bottomLeft = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(showRect.origin.x - length / 2, showRect.origin.y + showRect.size.height - length / 2, length, length)];
+    UIBezierPath *bottomRight = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(showRect.origin.x + showRect.size.width - length / 2, showRect.origin.y + showRect.size.height- length / 2, length, length)];
+    [topLeft fill];
+    [topRight fill];
+    [bottomLeft fill];
+    [bottomRight fill];
+    
+
 }
 
 #pragma mark - Touch
