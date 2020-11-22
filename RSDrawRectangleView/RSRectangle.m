@@ -64,7 +64,7 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
     [real fill];
     
     // 边框颜色
-    UIColor *boarderColor = self.selected ? _rectangle.selectedColor : _rectangle.drawColor;
+    UIColor *boarderColor = self.selected ? (_rectangle.selectedColor ?: _rectangle.drawColor) : _rectangle.drawColor;
     CGFloat red = 0, green = 0, blue = 0, alpha = 0, white = 0;
     if ([boarderColor getRed:&red green:&green blue:&blue alpha:&alpha]) {
         [[UIColor colorWithRed:red * 0.7 green:green * 0.7 blue:blue * 0.7 alpha:1] set];
