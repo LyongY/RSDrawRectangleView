@@ -18,8 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
 - (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
-- (instancetype)initWithParent:(UIView *)view frame:(RSRectangleData *)rectangle;
+- (instancetype)initWithParent:(UIView *)view frame:(RSRectangleData *)rectangle didClick:(void(^)(RSRectangle *item))completion;
 - (void)updateFrame;
+@property (nonatomic, assign) BOOL selected;
 @end
 
 NS_ASSUME_NONNULL_END

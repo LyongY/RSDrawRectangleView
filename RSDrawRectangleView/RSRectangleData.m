@@ -43,6 +43,7 @@
         _width = width;
         _height = height;
         _drawColor = [UIColor colorWithRed:arc4random()%255/255. green:arc4random()%255/255. blue:arc4random()%255/255. alpha:0.5];
+        _selectedColor = UIColor.yellowColor;
     }
     return self;
 }
@@ -50,6 +51,7 @@
 - (instancetype)clone {
     RSRectangleData *item = [[RSRectangleData alloc] initWithFrame:CGRectMake(_x, _y, _width, _height)];
     item.drawColor = _drawColor;
+    item.selectedColor = _selectedColor;
     return item;
 }
 

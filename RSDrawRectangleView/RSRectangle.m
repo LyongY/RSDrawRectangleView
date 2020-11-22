@@ -25,13 +25,15 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
 @property (nonatomic, assign) RSRectangleState state;
 @property (nonatomic, assign) CGPoint beginPoint; // 开始点击时的点
 @property (nonatomic, assign) CGRect beginRect; // 开始更改前的rect 0~1
+@property (nonatomic, copy) void(^didClickBlock)(RSRectangle *item);
 @end
 
 @implementation RSRectangle
 
-- (instancetype)initWithParent:(UIView *)view frame:(RSRectangleData *)rectangle {
+- (instancetype)initWithParent:(UIView *)view frame:(RSRectangleData *)rectangle didClick:(nonnull void (^)(RSRectangle * _Nonnull))completion {
     self = [super init];
     if (self) {
+        _didClickBlock = completion;
         _extensionLength = 20;
         self.backgroundColor = UIColor.clearColor;
         [view addSubview:self];
@@ -39,6 +41,11 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
         [self updateFrame];
     }
     return self;
+}
+
+- (void)setSelected:(BOOL)selected {
+    _selected = selected;
+    [self setNeedsDisplay];
 }
 
 - (void)updateFrame {
@@ -50,21 +57,19 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
 }
 
 - (void)drawRect:(CGRect)rect {
-//    [UIColor.lightGrayColor set];
-//    UIBezierPath *full = [UIBezierPath bezierPathWithRect:rect];
-//    [full stroke];
-    
     // 填充色
     CGRect showRect = CGRectMake(rect.origin.x + _extensionLength, rect.origin.y + _extensionLength, rect.size.width - _extensionLength * 2, rect.size.height - _extensionLength * 2);
     [_rectangle.drawColor set];
     UIBezierPath *real = [UIBezierPath bezierPathWithRect:showRect];
     [real fill];
     
+    // 边框颜色
+    UIColor *boarderColor = self.selected ? _rectangle.selectedColor : _rectangle.drawColor;
     CGFloat red = 0, green = 0, blue = 0, alpha = 0, white = 0;
-    if ([_rectangle.drawColor getRed:&red green:&green blue:&blue alpha:&alpha]) {
+    if ([boarderColor getRed:&red green:&green blue:&blue alpha:&alpha]) {
         [[UIColor colorWithRed:red * 0.7 green:green * 0.7 blue:blue * 0.7 alpha:1] set];
     } else {
-        [_rectangle.drawColor getWhite:&white alpha:&alpha];
+        [boarderColor getWhite:&white alpha:&alpha];
         [[UIColor colorWithWhite:white * 0.7 alpha:1] set];
     }
     
@@ -90,6 +95,7 @@ typedef NS_ENUM(NSUInteger, RSRectangleState) {
 #pragma mark - Touch
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.superview bringSubviewToFront:self];
+    _didClickBlock(self);
     _beginPoint = [touches.anyObject locationInView:self.superview];
     _beginRect = CGRectMake(_rectangle.x, _rectangle.y, _rectangle.width, _rectangle.height);
     CGPoint point = [touches.anyObject locationInView:self];

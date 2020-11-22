@@ -19,10 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
 - (instancetype)initWithMaxCount:(NSInteger)maxCount colors:(NSArray<UIColor *> *)colors;
 
+@property (nonatomic, strong) UIColor *drawColor;
+@property (nonatomic, strong) UIColor *selectedColor;
+
+
 - (void)addRectangle:(RSRectangleData *)rectangle;
 
 - (void)addRectangles:(NSArray<RSRectangleData *> *)rectangles;
 
+- (void)deleteTop;
 - (void)deleteAll;
 
 - (NSArray<RSRectangleData *> *)rectangles;

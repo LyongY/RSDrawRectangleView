@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat width; // 0.0 ~ (1.0 - x)
 @property (nonatomic, assign) CGFloat height; // 0.0 ~ (1.0 - y)
 @property (nonatomic, strong) UIColor *drawColor;
+@property (nonatomic, strong) UIColor *selectedColor;
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

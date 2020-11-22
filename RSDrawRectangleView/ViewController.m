@@ -20,6 +20,8 @@
     // Do any additional setup after loading the view.
     
     _drawView = [[RSDrawRectangleView alloc] initWithMaxCount:3 colors:@[UIColor.grayColor, /*UIColor.blueColor, UIColor.greenColor*/]];
+    _drawView.drawColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.5];
+    _drawView.selectedColor = UIColor.orangeColor;
     
     [_drawView addRectangle:[[RSRectangleData alloc] initWithFrame:CGRectMake(0.2, 0.3, 0.5, 0.5)]];
 
@@ -46,12 +48,13 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    for (RSRectangleData *item in [_drawView rectangles]) {
-        NSLog(@"%@", item);
-    }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.drawView deleteAll];
-    });
+//    for (RSRectangleData *item in [_drawView rectangles]) {
+//        NSLog(@"%@", item);
+//    }
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self.drawView deleteAll];
+//    });
+    [self.drawView deleteTop];
 }
 
 @end
